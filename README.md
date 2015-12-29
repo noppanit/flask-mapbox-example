@@ -4,7 +4,6 @@
 
 ```
 export MAP_ACCESSKEY=<your access key>
-
 ```
 
 Then run the server
