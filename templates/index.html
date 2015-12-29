@@ -1,0 +1,37 @@
+<!doctype>
+
+<html>
+  <head>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.3/mapbox.js'></script>
+    <style>
+        body { margin:0; padding:0; }
+        #map { width: 600px; height: 400px; margin-top: 50px; }
+    </style>
+  </head>
+  <body>
+    <div>
+      <input type="text" name="username" id="username"/>
+      <input type="button" class="submit" value="Submit"/>
+    </div>
+    <div id="map">
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+    $('.submit').click(function() {
+      $.get('/result', function(response) {
+        var myLayer = L.mapbox.featureLayer().addTo(map);
+        myLayer.setGeoJSON(response.result);
+      });
+    });
+
+    L.mapbox.accessToken = '{{ACCESS_KEY}}';
+    var map = L.mapbox.map('map', 'mapbox.streets', {
+      scrollWheelZoom: false
+    }).setView([38.8929,-77.0252], 14);
+
+</script>
+  </body>
+</html>
+
