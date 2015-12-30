@@ -13,17 +13,34 @@
   <body>
     <div>
       <input type="text" name="username" id="username"/>
-      <input type="button" class="submit" value="Submit"/>
+      <input type="button" class="submit" value="Click here!"/>
+    </div>
+    <div id="log">
     </div>
     <div id="map">
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script>
+
     $('.submit').click(function() {
-      $.get('/result', function(response) {
-        var myLayer = L.mapbox.featureLayer().addTo(map);
-        myLayer.setGeoJSON(response.result);
-      });
+      var source = new EventSource('/process');
+      source.onopen = function(){
+        console.log('connection is opened.' + source.readyState);  
+      };
+      
+      source.onmessage = function(event) {
+        var message = $('#log').html();
+        $('#log').html(message + event.data);
+      };
+
+      source.onerror = function(e) {
+        source.close();
+        $.get('/result', function(response) {
+          var myLayer = L.mapbox.featureLayer().addTo(map);
+          myLayer.setGeoJSON(response.result);
+        });
+        alert('You should see a maker dropped on the map now');
+      };
     });
 
     L.mapbox.accessToken = '{{ACCESS_KEY}}';

@@ -18,14 +18,12 @@ def process():
     feature_collection = FeatureCollection([feature])
     return jsonify(result=feature_collection)
 
-'''
 @app.route('/process')
 def long_running_process():
       def generate():
         for row in range(1, 10):
-          yield 'Processing \n'
-          time.sleep(2)
+            yield 'data: Processing \n\n'
+            time.sleep(2)
       return Response(generate(), mimetype='text/event-stream')  
-'''
 
 app.run(threaded=True)
